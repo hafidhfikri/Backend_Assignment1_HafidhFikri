@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+</head>
+<body>
+    <h2>Book List</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Year Written</th>
+                <th>Edition</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% read_book_data.map(book=>{ %>
+				<tr>
+					<td><%= book.id %></td>
+					<td><%= book.title %></td>
+					<td><%= book.author %></td>
+					<td><%= book.year_written %></td>
+					<td><%= book.edition %></td>
+					<td><%= book.price %></td>
+				</tr>
+				<% }) %>
+        </tbody>
+    </table>
+
+    <script>
+        const books = <%- JSON.stringify(read_book_data) %>;
+        const q = document.querySelector(".query");
+
+         q.addEventListener("input", (event) => {
+            if(event.target.value){
+                const filtered = books.filter((el) => el.title.toLowerCase().includes(event.target.value.toLowerCase()));
+                const bookList = document.getElementById("book-list");
+                bookList.innerHTML = '';
+                if(!filtered.length){
+                    bookList.innerHTML = '<h4>Book not found</h4>';
+                }
+                filtered.forEach(book => {
+                    bookList.innerHTML += `
+                    <tr>
+                        <td>${book.id}</td>
+                        <td>${book.title}</td>
+                        <td>${book.author}</td>
+                        <td>${book.year_written}</td>
+                        <td>${book.edition}</td>
+                        <td>${book.price}</td>
+                    </tr>
+                    `
+                });
+            }else{
+                const bookList = document.getElementById("book-list");
+                    bookList.innerHTML = '';
+                    books.forEach(book => {
+                        bookList.innerHTML += `
+                        <tr>
+                            <td>${book.id}</td>
+                            <td>${book.title}</td>
+                            <td>${book.author}</td>
+                            <td>${book.year_written}</td>
+                            <td>${book.edition}</td>
+                            <td>${book.price}</td>
+                        </tr>
+                        `
+                });
+            }
+
+            })
+    </script>
+</body>
+</html>
